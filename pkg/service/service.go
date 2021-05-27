@@ -24,9 +24,9 @@ func (s *Service) Convert(file []byte) (fileOut string, err error){
 	t := models.Yaml2Go{}
 	fmt.Print(string(file))
 	err = yaml.Unmarshal(file, &t)
-       if err != nil {
+    	if err != nil {
 			logrus.Errorf("YAML unmarshall error: %s", err.Error())
-       }
+       	}
 	fileOut = fmt.Sprintf("currency{%s=%d, %s=%d}", t.Currencies[0].Name, t.Currencies[0].Value, t.Currencies[1].Name, t.Currencies[1].Value)
 	return
 }

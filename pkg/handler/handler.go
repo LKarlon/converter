@@ -1,12 +1,11 @@
 package handler
 
 import (
-	"fmt"
-	"io"
-	"os"
+	"io/ioutil"
 
 	"github.com/LKarlon/converter/pkg/service"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 type Handler struct {
@@ -25,23 +24,15 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	return router
 }
 
-func (h *Handler) convert(c *gin.Context){
-	file, err := os.Open("./file.yaml")
-    if err != nil{
-        fmt.Println(err) 
-        os.Exit(1) 
-    }
-    defer file.Close() 
-     
-    data := make([]byte, 64)
-    str := ""
-    for{
-        n, err := file.Read(data)
-        if err == io.EOF{   
-            break           
-		}
-		str = str + string(data[:n])
+func (h *Handler) convert(c *gin.Context){	 
+	file, err := ioutil.ReadFile("./file.yaml")
+	if err != nil {
+		logrus.Errorf("file read error: %s", err.Error())
+	}
 
+	str, err := h.services.Convert(file)
+	if err != nil {
+		logrus.Errorf("service error: %s", err.Error())
 	}
 	c.String(200, str)
 }

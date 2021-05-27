@@ -28,11 +28,13 @@ func (h *Handler) convert(c *gin.Context){
 	file, err := ioutil.ReadFile("./file.yaml")
 	if err != nil {
 		logrus.Errorf("file read error: %s", err.Error())
+		return
 	}
 
 	str, err := h.services.Convert(file)
 	if err != nil {
 		logrus.Errorf("service error: %s", err.Error())
+		return
 	}
 	c.String(200, str)
 }

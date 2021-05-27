@@ -1,4 +1,6 @@
+package service
+
 type ServiceTransport interface {
 
-	FileDecode(ctx *gin.) (employeeID, tripID string, files []models.File, err error)
+//	FileDecode() (tripID string, files []models.File, err error)
 }

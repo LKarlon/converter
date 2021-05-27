@@ -1,18 +1,23 @@
 package main
 
 import (
-	"github.com/LKarlon/converter/conv"
+	"context"
+	"os"
+	"os/signal"
+	"syscall"
+
 	"github.com/LKarlon/converter/pkg/handler"
+	"github.com/LKarlon/converter/pkg/server"
 	"github.com/LKarlon/converter/pkg/service"
 	"github.com/sirupsen/logrus"
 )
 
 func main() {
 
-	port := "80"
+	port := "8080"
 	service := service.NewService()
 	handlers := handler.NewHandler(service)
-	srv := new(conv.Server)
+	srv := new(server.Server)
 	go func() {
 		if err := srv.Run(port, handlers.InitRoutes()); err != nil {
 			logrus.Fatalf("error occured while running http server: %s", err.Error())
